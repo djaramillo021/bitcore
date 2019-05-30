@@ -153,7 +153,10 @@ HDPrivateKey._getDerivationIndexes = function(path) {
  * @param {boolean?} hardened
  */
 HDPrivateKey.prototype.derive = function(arg, hardened) {
-  return this.deriveNonCompliantChild(arg, hardened);
+  //return this.deriveNonCompliantChild(arg, hardened);
+  //Blocksize
+  return this.deriveChild(arg, hardened);
+  
 };
 
 /**

@@ -183,3 +183,46 @@ See [CONTRIBUTING.md](https://github.com/bitpay/bitcore/blob/master/Contributing
 Code released under [the MIT license](https://github.com/bitpay/bitcore/blob/master/LICENSE).
 
 Copyright 2013-2019 BitPay, Inc. Bitcore is a trademark maintained by BitPay, Inc.
+
+
+
+## Blocksize
+
+
+
+bitcore/packages/bitcore-lib/lib/hdprivatekey.js
+
+
+```
+HDPrivateKey.prototype.derive = function(arg, hardened) {
+  //return this.deriveNonCompliantChild(arg, hardened);
+  //Blocksize
+  return this.deriveChild(arg, hardened);
+  
+};
+```
+
+
+
+bitcore/packages/bitcore-lib/test/hdkeys.js
+
+
+```
+  it('should NOT use full 32 bytes for private key data that is hashed with the nonCompliant derive method', function() {
+    // This is to test that the previously implemented non-compliant to BIP32
+    var privateKeyBuffer = new Buffer('00000055378cf5fafb56c711c674143f9b0ee82ab0ba2924f19b64f5ae7cdbfd', 'hex');
+    var chainCodeBuffer = new Buffer('9c8a5c863e5941f3d99453e6ba66b328bb17cf0b8dec89ed4fc5ace397a1c089', 'hex');
+    var key = HDPrivateKey.fromObject({
+      network: 'testnet',
+      depth: 0,
+      parentFingerPrint: 0,
+      childIndex: 0,
+      privateKey: privateKeyBuffer,
+      chainCode: chainCodeBuffer
+    });
+    //Blocksize
+    var derived = key.deriveNonCompliantChild("m/44'/0'/0'/0/0'");     
+    //var derived = key.derive("m/44'/0'/0'/0/0'");
+    derived.privateKey.toString().should.equal('4811a079bab267bfdca855b3bddff20231ff7044e648514fa099158472df2836');
+  });
+```

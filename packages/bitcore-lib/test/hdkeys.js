@@ -266,7 +266,9 @@ describe('BIP32 compliance', function() {
       privateKey: privateKeyBuffer,
       chainCode: chainCodeBuffer
     });
-    var derived = key.derive("m/44'/0'/0'/0/0'");
+    //Blocksize
+    var derived = key.deriveNonCompliantChild("m/44'/0'/0'/0/0'");     
+    //var derived = key.derive("m/44'/0'/0'/0/0'");
     derived.privateKey.toString().should.equal('4811a079bab267bfdca855b3bddff20231ff7044e648514fa099158472df2836');
   });
 
